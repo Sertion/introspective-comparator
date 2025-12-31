@@ -1,0 +1,216 @@
+{
+  "variants": {
+    "face=ceiling,facing=east,mode=compare,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator",
+      "x": 270,
+      "y": 90
+    },
+    "face=ceiling,facing=east,mode=compare,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_on",
+      "x": 270,
+      "y": 90
+    },
+    "face=ceiling,facing=east,mode=subtract,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract",
+      "x": 270,
+      "y": 90
+    },
+    "face=ceiling,facing=east,mode=subtract,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract_on",
+      "x": 270,
+      "y": 90
+    },
+    "face=ceiling,facing=north,mode=compare,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator",
+      "x": 270
+    },
+    "face=ceiling,facing=north,mode=compare,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_on",
+      "x": 270
+    },
+    "face=ceiling,facing=north,mode=subtract,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract",
+      "x": 270
+    },
+    "face=ceiling,facing=north,mode=subtract,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract_on",
+      "x": 270
+    },
+    "face=ceiling,facing=south,mode=compare,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator",
+      "x": 270,
+      "y": 180
+    },
+    "face=ceiling,facing=south,mode=compare,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_on",
+      "x": 270,
+      "y": 180
+    },
+    "face=ceiling,facing=south,mode=subtract,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract",
+      "x": 270,
+      "y": 180
+    },
+    "face=ceiling,facing=south,mode=subtract,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract_on",
+      "x": 270,
+      "y": 180
+    },
+    "face=ceiling,facing=west,mode=compare,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator",
+      "x": 270,
+      "y": 270
+    },
+    "face=ceiling,facing=west,mode=compare,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_on",
+      "x": 270,
+      "y": 270
+    },
+    "face=ceiling,facing=west,mode=subtract,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract",
+      "x": 270,
+      "y": 270
+    },
+    "face=ceiling,facing=west,mode=subtract,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract_on",
+      "x": 270,
+      "y": 270
+    },
+    "face=floor,facing=east,mode=compare,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator",
+      "x": 90,
+      "y": 90
+    },
+    "face=floor,facing=east,mode=compare,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_on",
+      "x": 90,
+      "y": 90
+    },
+    "face=floor,facing=east,mode=subtract,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract",
+      "x": 90,
+      "y": 90
+    },
+    "face=floor,facing=east,mode=subtract,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract_on",
+      "x": 90,
+      "y": 90
+    },
+    "face=floor,facing=north,mode=compare,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator",
+      "x": 90
+    },
+    "face=floor,facing=north,mode=compare,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_on",
+      "x": 90
+    },
+    "face=floor,facing=north,mode=subtract,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract",
+      "x": 90
+    },
+    "face=floor,facing=north,mode=subtract,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract_on",
+      "x": 90
+    },
+    "face=floor,facing=south,mode=compare,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator",
+      "x": 90,
+      "y": 180
+    },
+    "face=floor,facing=south,mode=compare,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_on",
+      "x": 90,
+      "y": 180
+    },
+    "face=floor,facing=south,mode=subtract,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract",
+      "x": 90,
+      "y": 180
+    },
+    "face=floor,facing=south,mode=subtract,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract_on",
+      "x": 90,
+      "y": 180
+    },
+    "face=floor,facing=west,mode=compare,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator",
+      "x": 90,
+      "y": 270
+    },
+    "face=floor,facing=west,mode=compare,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_on",
+      "x": 90,
+      "y": 270
+    },
+    "face=floor,facing=west,mode=subtract,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract",
+      "x": 90,
+      "y": 270
+    },
+    "face=floor,facing=west,mode=subtract,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract_on",
+      "x": 90,
+      "y": 270
+    },
+    "face=wall,facing=east,mode=compare,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator",
+      "y": 90
+    },
+    "face=wall,facing=east,mode=compare,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_on",
+      "y": 90
+    },
+    "face=wall,facing=east,mode=subtract,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract",
+      "y": 90
+    },
+    "face=wall,facing=east,mode=subtract,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract_on",
+      "y": 90
+    },
+    "face=wall,facing=north,mode=compare,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator"
+    },
+    "face=wall,facing=north,mode=compare,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_on"
+    },
+    "face=wall,facing=north,mode=subtract,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract"
+    },
+    "face=wall,facing=north,mode=subtract,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract_on"
+    },
+    "face=wall,facing=south,mode=compare,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator",
+      "y": 180
+    },
+    "face=wall,facing=south,mode=compare,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_on",
+      "y": 180
+    },
+    "face=wall,facing=south,mode=subtract,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract",
+      "y": 180
+    },
+    "face=wall,facing=south,mode=subtract,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract_on",
+      "y": 180
+    },
+    "face=wall,facing=west,mode=compare,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator",
+      "y": 270
+    },
+    "face=wall,facing=west,mode=compare,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_on",
+      "y": 270
+    },
+    "face=wall,facing=west,mode=subtract,powered=false": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract",
+      "y": 270
+    },
+    "face=wall,facing=west,mode=subtract,powered=true": {
+      "model": "introspective_comparator:block/introspective_comparator_subtract_on",
+      "y": 270
+    }
+  }
+}

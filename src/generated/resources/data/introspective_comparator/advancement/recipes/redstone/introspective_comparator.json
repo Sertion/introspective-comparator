@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_bowl": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:bowl"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_comparator": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:comparator"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "introspective_comparator:introspective_comparator"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_comparator",
+      "has_bowl"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "introspective_comparator:introspective_comparator"
+    ]
+  }
+}

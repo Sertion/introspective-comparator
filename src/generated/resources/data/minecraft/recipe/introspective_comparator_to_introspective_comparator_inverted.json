@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    "introspective_comparator:introspective_comparator"
+  ],
+  "result": {
+    "count": 1,
+    "id": "introspective_comparator:introspective_comparator_inverted"
+  }
+}

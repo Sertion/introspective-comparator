@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "introspective_comparator:block/introspective_comparator_inverted"
+  }
+}

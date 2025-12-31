@@ -1,0 +1,14 @@
+{
+	"block.introspective_comparator.introspective_comparator": "Introspective Comparator",
+	"item.introspective_comparator.introspective_comparator": "Introspective Comparator",
+	"item.introspective_comparator.introspective_comparator.tooltip": "Sends a comparator-like redstone signal into the block it is reading from.",
+	"item.introspective_comparator.introspective_comparator.tooltip.advanced": "Right click with a wrench to convert to inverted variant.",
+	"block.introspective_comparator.introspective_comparator_inverted": "Inverted Introspective Comparator",
+	"item.introspective_comparator.introspective_comparator_inverted": "Inverted Introspective Comparator",
+	"item.introspective_comparator.introspective_comparator_inverted.tooltip": "Sends an inverted comparator-like redstone signal into the block it is reading from.",
+	"item.introspective_comparator.introspective_comparator_inverted.tooltip.advanced": "Right click with a wrench to convert to regular variant.",
+	"introspective_comparator.configuration.title": "Introspective Comparator Configs",
+	"introspective_comparator.configuration.section.introspective_comparator.common.toml": "Introspective Comparator Configs",
+	"introspective_comparator.configuration.section.introspective_comparator.common.toml.title": "Introspective Comparator Configs",
+	"introspective_comparator.configuration.show_tooltips": "Add tooltips"
+}

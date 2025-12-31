@@ -1,0 +1,11 @@
+{
+	"parent": "introspective_comparator:block/introspective_comparator",
+	"visibility": {
+		"input_on": true,
+		"input_off": false,
+		"base_off": false,
+		"mode_compare": false,
+		"mode_subtract": true,
+		"base_inverted_on": true
+	}
+}
