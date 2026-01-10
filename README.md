@@ -1,4 +1,4 @@
-# Introspective Comparator - A NeoForge Mod for Minecraft
+# Introspective Comparator - A NeoForged Mod for Minecraft
 
 Introspective Comparator adds two blocks:
 
