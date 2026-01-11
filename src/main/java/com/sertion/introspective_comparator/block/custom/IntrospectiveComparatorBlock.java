@@ -291,7 +291,7 @@ public class IntrospectiveComparatorBlock extends Block implements EntityBlock {
             return InteractionResult.PASS;
         }
 
-        if (stack.getTags().noneMatch(Tags.Items.TOOLS_WRENCH::equals)) {
+        if (stack.is(Tags.Items.TOOLS_WRENCH)) {
             return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
         }
 
