@@ -9,7 +9,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.world.item.Items;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -45,12 +45,12 @@ public class IntrospectiveComparatorRecipeProvider extends RecipeProvider {
         }
 
         @Override
-        protected @NotNull RecipeProvider createRecipeProvider(HolderLookup.@NotNull Provider provider, @NotNull RecipeOutput output) {
+        protected @NonNull RecipeProvider createRecipeProvider(HolderLookup.@NonNull Provider provider, @NonNull RecipeOutput output) {
             return new IntrospectiveComparatorRecipeProvider(provider, output);
         }
 
         @Override
-        public @NotNull String getName() {
+        public @NonNull String getName() {
             return "IntrospectiveComparatorRecipeProvider";
         }
     }

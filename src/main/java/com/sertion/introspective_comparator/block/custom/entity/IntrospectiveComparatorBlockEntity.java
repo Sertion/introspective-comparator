@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class IntrospectiveComparatorBlockEntity extends BlockEntity implements PowerHavingBlockEntity {
     private int power = 0;
@@ -24,12 +24,12 @@ public class IntrospectiveComparatorBlockEntity extends BlockEntity implements P
         this.power = power;
     }
 
-    protected final void loadAdditional(@NotNull ValueInput in) {
+    protected final void loadAdditional(@NonNull ValueInput in) {
         super.loadAdditional(in);
         this.power = in.getIntOr("power", 0);
     }
 
-    protected final void saveAdditional(@NotNull ValueOutput out) {
+    protected final void saveAdditional(@NonNull ValueOutput out) {
         super.saveAdditional(out);
         out.putInt("power", this.power);
     }

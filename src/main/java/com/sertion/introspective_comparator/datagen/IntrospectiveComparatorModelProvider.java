@@ -8,7 +8,7 @@ import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
-import net.minecraft.client.renderer.block.model.Variant;
+import net.minecraft.client.renderer.block.dispatch.Variant;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.ComparatorMode;
 import net.neoforged.neoforge.registries.DeferredBlock;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class IntrospectiveComparatorModelProvider extends ModelProvider {
     public IntrospectiveComparatorModelProvider(PackOutput output) {
@@ -24,7 +24,7 @@ public class IntrospectiveComparatorModelProvider extends ModelProvider {
     }
 
     @Override
-    protected void registerModels(@NotNull BlockModelGenerators blockModels, @NotNull ItemModelGenerators itemModels) {
+    protected void registerModels(@org.jspecify.annotations.NonNull BlockModelGenerators blockModels, @NonNull ItemModelGenerators itemModels) {
         blockModels.blockStateOutput.accept(
             faceAttachedVariant(
                 comparatorVariants(
@@ -46,12 +46,12 @@ public class IntrospectiveComparatorModelProvider extends ModelProvider {
         simpleBlockItem(blockModels, IntrospectiveComparator.INTROSPECTIVE_COMPARATOR_INVERTED, IntrospectiveComparatorInvertedBlock.NAME);
     }
 
-    private @NotNull MultiVariantGenerator startMultiVariant(DeferredBlock<?> block) {
+    private @NonNull MultiVariantGenerator startMultiVariant(DeferredBlock<?> block) {
         Variant introspectiveComparatorVariant = new Variant(block.getId());
         return MultiVariantGenerator.dispatch(block.get(), BlockModelGenerators.variant(introspectiveComparatorVariant));
     }
 
-    private @NotNull MultiVariantGenerator faceAttachedVariant(@NotNull MultiVariantGenerator generator) {
+    private @NonNull MultiVariantGenerator faceAttachedVariant(@NonNull MultiVariantGenerator generator) {
         return generator
             .with(
                 PropertyDispatch.modify(BlockStateProperties.ATTACH_FACE)
@@ -67,7 +67,7 @@ public class IntrospectiveComparatorModelProvider extends ModelProvider {
             );
     }
 
-    private @NotNull MultiVariantGenerator comparatorVariants(@NotNull MultiVariantGenerator generator, @NotNull String modelPath) {
+    private @NonNull MultiVariantGenerator comparatorVariants(@NonNull MultiVariantGenerator generator, @NonNull String modelPath) {
         return generator
             .with(
                 PropertyDispatch.modify(BlockStateProperties.MODE_COMPARATOR, BlockStateProperties.POWERED)
@@ -82,7 +82,7 @@ public class IntrospectiveComparatorModelProvider extends ModelProvider {
         return "block/" + blockName;
     }
 
-    private void simpleBlockItem(@NotNull BlockModelGenerators blockModels, DeferredBlock<?> block, String blockName) {
+    private void simpleBlockItem(@NonNull BlockModelGenerators blockModels, DeferredBlock<?> block, String blockName) {
         blockModels.registerSimpleItemModel(block.get(), Identifier.fromNamespaceAndPath(modId, blockPath(blockName)));
     }
 }

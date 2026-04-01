@@ -9,7 +9,7 @@ import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.Set;
@@ -27,7 +27,7 @@ public class IntrospectiveComparatorBlockLootTableProvider extends BlockLootSubP
     }
 
     @Override
-    protected @NotNull Iterable<Block> getKnownBlocks() {
+    protected @NonNull Iterable<Block> getKnownBlocks() {
         return IntrospectiveComparator.BLOCKS.getEntries().stream().map(Holder::value).toList();
     }
 

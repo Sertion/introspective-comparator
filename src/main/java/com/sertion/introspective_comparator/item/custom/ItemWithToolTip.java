@@ -8,17 +8,17 @@ import java.util.List;
 public interface ItemWithToolTip {
     void addToolTip(List<Component> toolTip);
 
-    default void createToolTip(List<Component> toolTip, String descriptor) {
-        String key = descriptor + ".tooltip";
-        var descriptionTooltip = Component.translatable(key);
-        if (!descriptionTooltip.getString().equals(key)) {
-            toolTip.add(descriptionTooltip.withStyle(ChatFormatting.GRAY));
+    default void createToolTip(List<Component> toolTip, String descriptor, boolean addAdvanced) {
+        addTextToToolTip(toolTip, descriptor + ".tooltip", ChatFormatting.GRAY);
+        if (addAdvanced) {
+            addTextToToolTip(toolTip, descriptor + ".tooltip.advanced", ChatFormatting.DARK_GRAY);
         }
+    }
 
-        String advancedKey = key + ".advanced";
-        var descriptionTooltipAdvanced = Component.translatable(advancedKey);
-        if (!descriptionTooltipAdvanced.getString().equals(advancedKey)) {
-            toolTip.add(descriptionTooltipAdvanced.withStyle(ChatFormatting.DARK_GRAY));
+    default void addTextToToolTip(List<Component> toolTip, String descriptor, ChatFormatting formatting) {
+        var text = Component.translatable(descriptor);
+        if (!text.getString().equals(descriptor)) {
+            toolTip.add(text.withStyle(formatting));
         }
     }
 }

@@ -7,6 +7,7 @@ import com.sertion.introspective_comparator.block.custom.entity.IntrospectiveCom
 import com.sertion.introspective_comparator.item.custom.BlockItemWithToolTip;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -40,7 +41,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import java.util.EnumSet;
@@ -51,10 +52,10 @@ public class IntrospectiveComparatorBlock extends Block implements EntityBlock {
     public final static String NAME = "introspective_comparator";
     public final static MapCodec<IntrospectiveComparatorBlock> CODEC = simpleCodec(IntrospectiveComparatorBlock::new);
 
-    public final static EnumProperty<@NotNull AttachFace> ATTACH_FACE = BlockStateProperties.ATTACH_FACE;
-    public final static EnumProperty<@NotNull Direction> HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public final static EnumProperty<@NonNull AttachFace> ATTACH_FACE = BlockStateProperties.ATTACH_FACE;
+    public final static EnumProperty<@NonNull Direction> HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
     public final static BooleanProperty POWERED = BlockStateProperties.POWERED;
-    public final static EnumProperty<@NotNull ComparatorMode> MODE_COMPARATOR = BlockStateProperties.MODE_COMPARATOR;
+    public final static EnumProperty<@NonNull ComparatorMode> MODE_COMPARATOR = BlockStateProperties.MODE_COMPARATOR;
 
     private final static VoxelShape SOUTH_FLOOR_SHAPE = Shapes.join(
         Shapes.join(
@@ -75,15 +76,20 @@ public class IntrospectiveComparatorBlock extends Block implements EntityBlock {
         OctahedralGroup.BLOCK_ROT_Y_90 .compose(OctahedralGroup.BLOCK_ROT_X_90),  // Wall West
         OctahedralGroup.BLOCK_ROT_Y_180.compose(OctahedralGroup.BLOCK_ROT_X_90),  // Wall North
         OctahedralGroup.BLOCK_ROT_Y_270.compose(OctahedralGroup.BLOCK_ROT_X_90),  // Wall East
-        OctahedralGroup.BLOCK_ROT_X_180.compose(OctahedralGroup.BLOCK_ROT_Y_180), // Ceiling North
-        OctahedralGroup.BLOCK_ROT_X_180.compose(OctahedralGroup.BLOCK_ROT_Y_90),  // Ceiling East
-        OctahedralGroup.BLOCK_ROT_X_180.compose(OctahedralGroup.IDENTITY),        // Ceiling South
-        OctahedralGroup.BLOCK_ROT_X_180.compose(OctahedralGroup.BLOCK_ROT_Y_270)  // Ceiling West
+        OctahedralGroup.BLOCK_ROT_X_180.compose(OctahedralGroup.IDENTITY),        // Ceiling North
+        OctahedralGroup.BLOCK_ROT_X_180.compose(OctahedralGroup.BLOCK_ROT_Y_270), // Ceiling East
+        OctahedralGroup.BLOCK_ROT_X_180.compose(OctahedralGroup.BLOCK_ROT_Y_180), // Ceiling South
+        OctahedralGroup.BLOCK_ROT_X_180.compose(OctahedralGroup.BLOCK_ROT_Y_90)   // Ceiling West
     ).map(og -> Shapes.rotate(SOUTH_FLOOR_SHAPE, og)).toArray(VoxelShape[]::new);
 
-    public static DeferredBlock<@NotNull Block> registerTo(@NotNull DeferredRegister.Blocks registry, DeferredRegister.Items itemRegistry) {
-        DeferredBlock<@NotNull Block> block = registry.registerBlock(NAME, IntrospectiveComparatorBlock::new);
-        itemRegistry.registerItem(NAME, (props) -> new BlockItemWithToolTip(block.get(), props));
+    public static DeferredBlock<@NonNull Block> registerTo(DeferredRegister. @NonNull Blocks registry, DeferredRegister. @NonNull Items itemRegistry) {
+        DeferredBlock<@NonNull Block> block = registry.registerBlock(NAME, IntrospectiveComparatorBlock::new);
+        itemRegistry.registerItem(NAME, (props) -> new BlockItemWithToolTip(block.get(), props,
+            () -> BuiltInRegistries.ITEM
+                .stream()
+                .map(ItemStack::new)
+                .anyMatch((stack) -> stack.canPerformAction(IntrospectiveComparator.WRENCH_CONFIGURE_ABILITY))
+        ));
         return block;
     }
 
@@ -91,7 +97,6 @@ public class IntrospectiveComparatorBlock extends Block implements EntityBlock {
 
     public IntrospectiveComparatorBlock(Properties props) {
         super(props.noOcclusion().mapColor(MapColor.NONE));
-
         registerDefaultState(
             getStateDefinition().any()
                 .setValue(HORIZONTAL_FACING, Direction.SOUTH)
@@ -112,7 +117,7 @@ public class IntrospectiveComparatorBlock extends Block implements EntityBlock {
     }
 
     @Override
-    protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+    protected @NonNull VoxelShape getShape(@NonNull BlockState state, @NonNull BlockGetter level, @NonNull BlockPos pos, @NonNull CollisionContext context) {
         int index = util.getShapeIndex(state);
         if (index >= 0 && index < shapes.length) {
             return shapes[index];
@@ -122,24 +127,24 @@ public class IntrospectiveComparatorBlock extends Block implements EntityBlock {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<@NotNull Block, @NotNull BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<@NonNull Block, @NonNull BlockState> builder) {
         builder.add(HORIZONTAL_FACING, ATTACH_FACE, MODE_COMPARATOR, POWERED);
     }
 
     @Override
-    public void setPlacedBy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @Nullable LivingEntity placer, @NotNull ItemStack stack) {
-        if (shouldTurnOn(level, pos, state)) {
+    public void setPlacedBy(@NonNull Level level, @NonNull BlockPos pos, @NonNull BlockState state, @Nullable LivingEntity placer, @NonNull ItemStack stack) {
+        if (util.shouldTurnOn(level, pos, state)) {
             level.scheduleTick(pos, this, 1);
         }
     }
 
     @Override
-    protected void onPlace(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState oldState, boolean isMoving) {
+    protected void onPlace(@NonNull BlockState state, @NonNull Level level, @NonNull BlockPos pos, @NonNull BlockState oldState, boolean isMoving) {
         updateNeighborAttachedTo(level, pos, state);
     }
 
     @Override
-    public @Nullable BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
+    public @Nullable BlockState getStateForPlacement(@NonNull BlockPlaceContext context) {
         Direction observerDirection = Objects.requireNonNull(Blocks.OBSERVER.getStateForPlacement(context)).getValue(BlockStateProperties.FACING);
         BlockState state = defaultBlockState()
             .setValue(HORIZONTAL_FACING, util.getHorizontalForPlacement(context, observerDirection))
@@ -161,22 +166,32 @@ public class IntrospectiveComparatorBlock extends Block implements EntityBlock {
     }
 
     @Override
-    protected boolean propagatesSkylightDown(@NotNull BlockState state) {
+    protected boolean propagatesSkylightDown(@NonNull BlockState state) {
         return true;
     }
 
     @Override
-    protected boolean isSignalSource(@NotNull BlockState state) {
+    protected boolean isSignalSource(@NonNull BlockState state) {
         return true;
     }
 
     @Override
-    public boolean getWeakChanges(@NotNull BlockState state, @NotNull LevelReader level, @NotNull BlockPos pos) {
+    public boolean getWeakChanges(@NonNull BlockState state, @NonNull LevelReader level, @NonNull BlockPos pos) {
         return true;
     }
 
     @Override
-    protected boolean canSurvive(@NotNull BlockState state, @NotNull LevelReader level, @NotNull BlockPos pos) {
+    public boolean canConnectRedstone(@NonNull BlockState state, @NonNull BlockGetter level, @NonNull BlockPos pos, @Nullable Direction direction) {
+        if (direction == null) {
+            return false;
+        }
+
+        Direction facing = state.getValue(HORIZONTAL_FACING);
+        return facing.getClockWise() == direction || facing.getCounterClockWise() == direction;
+    }
+
+    @Override
+    protected boolean canSurvive(@NonNull BlockState state, @NonNull LevelReader level, @NonNull BlockPos pos) {
         if (util.canSurviveOnAttachedOrFloor(state, level, pos)) {
             return true;
         }
@@ -184,31 +199,21 @@ public class IntrospectiveComparatorBlock extends Block implements EntityBlock {
         return !facingBlock.is(Blocks.AIR) && !facingBlock.is(IntrospectiveComparator.INTROSPECTIVE_COMPARATOR);
     }
 
-    protected boolean shouldTurnOn(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
-        return util.shouldTurnOn(level, pos, state);
-    }
-
     @Override
-    protected void tick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource randomSource) {
+    protected void tick(@NonNull BlockState state, @NonNull ServerLevel level, @NonNull BlockPos pos, @NonNull RandomSource randomSource) {
         refreshOutputState(state, level, pos);
     }
 
-    protected void refreshOutputState(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos) {
+    protected void refreshOutputState(@NonNull BlockState state, @NonNull Level level, @NonNull BlockPos pos) {
         if (!util.hasPoweredChanged(state, level, pos)) {
             return;
         }
-
-        boolean newPowered = shouldTurnOn(level, pos, state);
-        boolean oldPowered = state.getValue(POWERED);
-        util.setStoredPower(level, pos, state);
-        if (oldPowered != newPowered) {
-            level.setBlock(pos, state.setValue(POWERED, newPowered), Block.UPDATE_CLIENTS);
-        }
+        util.updatePoweredState(level, state, pos);
 
         updateNeighborAttachedTo(level, pos, state);
     }
 
-    protected void updateNeighborAttachedTo(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state) {
+    protected void updateNeighborAttachedTo(@NonNull Level level, @NonNull BlockPos pos, @NonNull BlockState state) {
         Direction facing = util.getFacing(state);
         if (EventHooks.onNeighborNotify(level, pos, level.getBlockState(pos), EnumSet.of(facing), false).isCanceled()) {
             return;
@@ -220,7 +225,7 @@ public class IntrospectiveComparatorBlock extends Block implements EntityBlock {
     }
 
     @Override
-    protected void neighborChanged(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Block neighborBlock, @Nullable Orientation orientation, boolean movedByPiston) {
+    protected void neighborChanged(@NonNull BlockState state, @NonNull Level level, @NonNull BlockPos pos, @NonNull Block neighborBlock, @Nullable Orientation orientation, boolean movedByPiston) {
         boolean canSurvive = state.canSurvive(level, pos);
         if (canSurvive && level.getBlockTicks().willTickThisTick(pos, this) || level.isClientSide()) {
             return;
@@ -241,18 +246,14 @@ public class IntrospectiveComparatorBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public void onNeighborChange(@NotNull BlockState state, @NotNull LevelReader levelReader, @NotNull BlockPos pos, @NotNull BlockPos neighbor) {
-        if (levelReader.isClientSide()) {
-            return;
-        }
-
-        if (levelReader instanceof Level level) {
+    public void onNeighborChange(@NonNull BlockState state, @NonNull LevelReader levelReader, @NonNull BlockPos pos, @NonNull BlockPos neighbor) {
+        if (levelReader instanceof ServerLevel level) {
             state.handleNeighborChanged(level, pos, levelReader.getBlockState(neighbor).getBlock(), null, false);
         }
     }
 
     @Override
-    protected int getSignal(BlockState blockState, @NotNull BlockGetter blockAccess, @NotNull BlockPos pos, @NotNull Direction side) {
+    protected int getSignal(BlockState blockState, @NonNull BlockGetter blockAccess, @NonNull BlockPos pos, @NonNull Direction side) {
         if (!blockState.getValue(POWERED) || !util.isSupportedOutputSide(blockState, side)) {
             return 0;
         }
@@ -261,48 +262,43 @@ public class IntrospectiveComparatorBlock extends Block implements EntityBlock {
     }
 
     @Override
-    protected int getDirectSignal(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull Direction direction) {
+    protected int getDirectSignal(@NonNull BlockState state, @NonNull BlockGetter level, @NonNull BlockPos pos, @NonNull Direction direction) {
         return getSignal(state, level, pos, direction);
     }
 
     @Override
-    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult hitResult) {
+    protected @NonNull InteractionResult useWithoutItem(@NonNull BlockState state, @NonNull Level level, @NonNull BlockPos pos, @NonNull Player player, @NonNull BlockHitResult hitResult) {
         if (!player.getAbilities().mayBuild) {
             return InteractionResult.PASS;
         }
 
         BlockState newState = state.cycle(MODE_COMPARATOR);
-        level.playSound(
-            player,
-            pos,
-            SoundEvents.COMPARATOR_CLICK,
-            SoundSource.BLOCKS,
-            0.3F,
-            newState.getValue(MODE_COMPARATOR) == ComparatorMode.SUBTRACT ? 0.55F : 0.5F
-        );
+        float pitch = newState.getValue(MODE_COMPARATOR) == ComparatorMode.SUBTRACT ? 0.55F : 0.5F;
+        level.playSound(player, pos, SoundEvents.COMPARATOR_CLICK, SoundSource.BLOCKS, 0.3F, pitch);
         level.setBlock(pos, newState, Block.UPDATE_CLIENTS);
         refreshOutputState(newState, level, pos);
         return InteractionResult.SUCCESS;
     }
 
     @Override
-    protected @NotNull InteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+    protected @NonNull InteractionResult useItemOn(@NonNull ItemStack stack, @NonNull BlockState state, @NonNull Level level, @NonNull BlockPos pos, @NonNull Player player, @NonNull InteractionHand hand, @NonNull BlockHitResult hitResult) {
         if (!player.getAbilities().mayBuild) {
             return InteractionResult.PASS;
         }
 
-        if (stack.is(Tags.Items.TOOLS_WRENCH)) {
+        if (!stack.is(Tags.Items.TOOLS_WRENCH) && !stack.canPerformAction(IntrospectiveComparator.WRENCH_CONFIGURE_ABILITY)) {
             return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
         }
 
-        swapTo(state, level, pos);
+        swapTo(state, level, pos, player);
         updateNeighborAttachedTo(level, pos, state);
 
-        return InteractionResult.SUCCESS;
+        return InteractionResult.PASS;
     }
 
-    protected void swapTo(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos) {
+    protected void swapTo(@NonNull BlockState state, @NonNull Level level, @NonNull BlockPos pos, @NonNull Player player) {
         if (level.isClientSide()) {
+            level.playSound(player, pos, SoundEvents.STONE_PLACE, SoundSource.BLOCKS, 0.3F, 0.5F);
             return;
         }
 
@@ -323,20 +319,19 @@ public class IntrospectiveComparatorBlock extends Block implements EntityBlock {
     }
 
     @Override
-    protected void affectNeighborsAfterRemoval(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, boolean movedByPiston) {
-        if (movedByPiston) {
-            return;
+    protected void affectNeighborsAfterRemoval(@NonNull BlockState state, @NonNull ServerLevel level, @NonNull BlockPos pos, boolean movedByPiston) {
+        if (!movedByPiston) {
+            updateNeighborAttachedTo(level, pos, state);
         }
-        updateNeighborAttachedTo(level, pos, state);
     }
 
     @Override
-    protected @NotNull MapCodec<? extends IntrospectiveComparatorBlock> codec() {
+    protected @NonNull MapCodec<? extends IntrospectiveComparatorBlock> codec() {
         return CODEC;
     }
 
     @Override
-    public @NotNull BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
+    public @NonNull BlockEntity newBlockEntity(@NonNull BlockPos blockPos, @NonNull BlockState blockState) {
         return new IntrospectiveComparatorBlockEntity(blockPos, blockState);
     }
 }

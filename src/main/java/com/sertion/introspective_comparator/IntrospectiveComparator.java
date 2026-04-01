@@ -15,12 +15,13 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 
 import java.util.function.Supplier;
@@ -30,19 +31,24 @@ import java.util.function.Supplier;
 public class IntrospectiveComparator {
     public static final String MOD_ID = "introspective_comparator";
     public static final Logger LOGGER = LogUtils.getLogger();
+
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MOD_ID);
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MOD_ID);
-    public static final DeferredBlock<@NotNull Block> INTROSPECTIVE_COMPARATOR = IntrospectiveComparatorBlock.registerTo(BLOCKS, ITEMS);
-    public static final DeferredBlock<@NotNull Block> INTROSPECTIVE_COMPARATOR_INVERTED = IntrospectiveComparatorInvertedBlock.registerTo(BLOCKS, ITEMS);
-    public static final DeferredRegister<@NotNull BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, IntrospectiveComparator.MOD_ID);
 
-    public static final Supplier<@NotNull BlockEntityType<@NotNull IntrospectiveComparatorBlockEntity>> INTROSPECTIVE_COMPARATOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(
+    public static final DeferredRegister<@NonNull BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, IntrospectiveComparator.MOD_ID);
+
+    public static final DeferredBlock<@NonNull Block> INTROSPECTIVE_COMPARATOR = IntrospectiveComparatorBlock.registerTo(BLOCKS, ITEMS);
+    public static final DeferredBlock<@NonNull Block> INTROSPECTIVE_COMPARATOR_INVERTED = IntrospectiveComparatorInvertedBlock.registerTo(BLOCKS, ITEMS);
+
+    public static final ItemAbility WRENCH_CONFIGURE_ABILITY = ItemAbility.get("wrench_configure");
+
+    public static final Supplier<@NonNull BlockEntityType<@NonNull IntrospectiveComparatorBlockEntity>> INTROSPECTIVE_COMPARATOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(
             "introspective_comparator_block_entity",
-            () -> new BlockEntityType<>(IntrospectiveComparatorBlockEntity::new, false, INTROSPECTIVE_COMPARATOR.get())
+            () -> new BlockEntityType<>(IntrospectiveComparatorBlockEntity::new, INTROSPECTIVE_COMPARATOR.get())
     );
-    public static final Supplier<@NotNull BlockEntityType<@NotNull IntrospectiveComparatorInvertedBlockEntity>> INTROSPECTIVE_COMPARATOR_INVERTED_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(
+    public static final Supplier<@NonNull BlockEntityType<@NonNull IntrospectiveComparatorInvertedBlockEntity>> INTROSPECTIVE_COMPARATOR_INVERTED_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(
             "introspective_comparator_inverted_block_entity",
-            () -> new BlockEntityType<>(IntrospectiveComparatorInvertedBlockEntity::new, false, INTROSPECTIVE_COMPARATOR_INVERTED.get())
+            () -> new BlockEntityType<>(IntrospectiveComparatorInvertedBlockEntity::new, INTROSPECTIVE_COMPARATOR_INVERTED.get())
     );
 
     public IntrospectiveComparator(IEventBus modEventBus, ModContainer modContainer) {
@@ -51,7 +57,7 @@ public class IntrospectiveComparator {
         BLOCK_ENTITY_TYPES.register(modEventBus);
         modEventBus.addListener(this::addCreative);
 
-        NeoForge.EVENT_BUS.register(new IntrospectiveComparatorEvents());
+        NeoForge.EVENT_BUS.register(IntrospectiveComparatorEvents.class);
 
         modContainer.registerConfig(ModConfig.Type.CLIENT, Config.SPEC);
     }
@@ -65,12 +71,8 @@ public class IntrospectiveComparator {
 
     private static class IntrospectiveComparatorEvents {
         @SubscribeEvent
-        private void addToolTipInformation(ItemTooltipEvent event) {
-            if (!Config.SHOW_TOOLTIPS.getAsBoolean()) {
-                return;
-            }
-
-            if (event.getItemStack().getItem() instanceof ItemWithToolTip item) {
+        private static void addToolTipInformation(ItemTooltipEvent event) {
+            if (Config.SHOW_TOOLTIPS.getAsBoolean() && event.getItemStack().getItem() instanceof ItemWithToolTip item) {
                 item.addToolTip(event.getToolTip());
             }
         }
