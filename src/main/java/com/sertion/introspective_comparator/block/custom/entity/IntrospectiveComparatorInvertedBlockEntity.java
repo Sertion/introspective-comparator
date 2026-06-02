@@ -4,6 +4,7 @@ package com.sertion.introspective_comparator.block.custom.entity;
 import com.sertion.introspective_comparator.IntrospectiveComparator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -14,6 +15,10 @@ public class IntrospectiveComparatorInvertedBlockEntity extends BlockEntity impl
 
     public IntrospectiveComparatorInvertedBlockEntity(BlockPos pos, BlockState blockState) {
         super(IntrospectiveComparator.INTROSPECTIVE_COMPARATOR_INVERTED_BLOCK_ENTITY.get(), pos, blockState);
+    }
+
+    public IntrospectiveComparatorInvertedBlockEntity(BlockEntityType<?> entityType, BlockPos pos, BlockState blockState) {
+        super(entityType, pos, blockState);
     }
 
     public final int getPower() {
