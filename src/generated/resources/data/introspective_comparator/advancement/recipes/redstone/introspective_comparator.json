@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "introspective_comparator:introspective_comparator"
+        "recipes": "introspective_comparator:introspective_comparator"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

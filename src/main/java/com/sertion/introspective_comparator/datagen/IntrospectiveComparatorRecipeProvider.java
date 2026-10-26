@@ -1,57 +1,38 @@
 package com.sertion.introspective_comparator.datagen;
 
 import com.sertion.introspective_comparator.IntrospectiveComparator;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.core.registries.MultiRegistryBootstrap;
 import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.world.item.Items;
-import org.jspecify.annotations.NonNull;
-
-import java.util.concurrent.CompletableFuture;
+import net.minecraft.world.item.crafting.Recipe;
 
 public class IntrospectiveComparatorRecipeProvider extends RecipeProvider {
-    protected IntrospectiveComparatorRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
-        super(registries, output);
+    protected IntrospectiveComparatorRecipeProvider(BootstrapContext<Recipe<?>> output, BootstrapContext<Advancement> advancementOutput) {
+        super(output, advancementOutput);
+    }
+
+    public static MultiRegistryBootstrap create() {
+        return RecipeProvider.asBootstrap(IntrospectiveComparatorRecipeProvider::new);
     }
 
     @Override
     protected void buildRecipes() {
-        ShapelessRecipeBuilder
-            .shapeless(this.registries.lookupOrThrow(Registries.ITEM), RecipeCategory.REDSTONE, IntrospectiveComparator.INTROSPECTIVE_COMPARATOR)
+        shapeless(RecipeCategory.REDSTONE, IntrospectiveComparator.INTROSPECTIVE_COMPARATOR)
             .requires(Items.COMPARATOR)
             .requires(Items.BOWL)
-            .unlockedBy("has_comparator", has(Items.COMPARATOR))
-            .unlockedBy("has_bowl", has(Items.BOWL))
+            .unlockedBy(getHasName(Items.COMPARATOR), has(Items.COMPARATOR))
+            .unlockedBy(getHasName(Items.BOWL), has(Items.BOWL))
             .save(output);
-        ShapelessRecipeBuilder
-            .shapeless(this.registries.lookupOrThrow(Registries.ITEM), RecipeCategory.REDSTONE, IntrospectiveComparator.INTROSPECTIVE_COMPARATOR_INVERTED)
+        shapeless(RecipeCategory.REDSTONE, IntrospectiveComparator.INTROSPECTIVE_COMPARATOR_INVERTED)
             .requires(IntrospectiveComparator.INTROSPECTIVE_COMPARATOR)
-            .unlockedBy("has_introspective_comparator", has(IntrospectiveComparator.INTROSPECTIVE_COMPARATOR))
-            .save(output, "introspective_comparator_to_introspective_comparator_inverted");
-        ShapelessRecipeBuilder
-            .shapeless(this.registries.lookupOrThrow(Registries.ITEM), RecipeCategory.REDSTONE, IntrospectiveComparator.INTROSPECTIVE_COMPARATOR)
+            .unlockedBy(getHasName(IntrospectiveComparator.INTROSPECTIVE_COMPARATOR.get()), has(IntrospectiveComparator.INTROSPECTIVE_COMPARATOR))
+            .save(output, IntrospectiveComparator.MOD_ID + ":" + "invert_introspective_comparator");
+        shapeless(RecipeCategory.REDSTONE, IntrospectiveComparator.INTROSPECTIVE_COMPARATOR)
             .requires(IntrospectiveComparator.INTROSPECTIVE_COMPARATOR_INVERTED)
-            .unlockedBy("has_introspective_comparator_inverted", has(IntrospectiveComparator.INTROSPECTIVE_COMPARATOR_INVERTED))
-            .save(output, "introspective_comparator_inverted_to_introspective_comparator");
-    }
-
-    public static class Runner extends RecipeProvider.Runner {
-        public Runner(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
-            super(output, lookupProvider);
-        }
-
-        @Override
-        protected @NonNull RecipeProvider createRecipeProvider(HolderLookup.@NonNull Provider provider, @NonNull RecipeOutput output) {
-            return new IntrospectiveComparatorRecipeProvider(provider, output);
-        }
-
-        @Override
-        public @NonNull String getName() {
-            return "IntrospectiveComparatorRecipeProvider";
-        }
+            .unlockedBy(getHasName(IntrospectiveComparator.INTROSPECTIVE_COMPARATOR_INVERTED.get()), has(IntrospectiveComparator.INTROSPECTIVE_COMPARATOR_INVERTED))
+            .save(output, IntrospectiveComparator.MOD_ID + ":" + "invert_introspective_comparator_inverted");
     }
 }

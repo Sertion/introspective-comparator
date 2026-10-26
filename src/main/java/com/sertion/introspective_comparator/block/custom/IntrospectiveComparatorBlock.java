@@ -1,7 +1,6 @@
 package com.sertion.introspective_comparator.block.custom;
 
 import com.mojang.math.OctahedralGroup;
-import com.mojang.serialization.MapCodec;
 import com.sertion.introspective_comparator.IntrospectiveComparator;
 import com.sertion.introspective_comparator.block.custom.entity.IntrospectiveComparatorBlockEntity;
 import com.sertion.introspective_comparator.item.custom.BlockItemWithToolTip;
@@ -50,7 +49,6 @@ import java.util.stream.Stream;
 
 public class IntrospectiveComparatorBlock extends Block implements EntityBlock {
     public final static String NAME = "introspective_comparator";
-    public final static MapCodec<IntrospectiveComparatorBlock> CODEC = simpleCodec(IntrospectiveComparatorBlock::new);
 
     public final static EnumProperty<@NonNull AttachFace> ATTACH_FACE = BlockStateProperties.ATTACH_FACE;
     public final static EnumProperty<@NonNull Direction> HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -181,7 +179,7 @@ public class IntrospectiveComparatorBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public boolean canConnectRedstone(@NonNull BlockState state, @NonNull BlockGetter level, @NonNull BlockPos pos, @Nullable Direction direction) {
+    protected boolean shouldRedstoneWireConnectTo(@NonNull BlockState state, @NonNull BlockGetter level, @NonNull BlockPos pos, @Nullable Direction direction) {
         if (direction == null) {
             return false;
         }
@@ -323,11 +321,6 @@ public class IntrospectiveComparatorBlock extends Block implements EntityBlock {
         if (!movedByPiston) {
             updateNeighborAttachedTo(level, pos, state);
         }
-    }
-
-    @Override
-    protected @NonNull MapCodec<? extends IntrospectiveComparatorBlock> codec() {
-        return CODEC;
     }
 
     @Override

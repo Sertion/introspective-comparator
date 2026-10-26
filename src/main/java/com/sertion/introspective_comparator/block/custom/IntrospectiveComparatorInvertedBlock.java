@@ -1,6 +1,5 @@
 package com.sertion.introspective_comparator.block.custom;
 
-import com.mojang.serialization.MapCodec;
 import com.sertion.introspective_comparator.IntrospectiveComparator;
 import com.sertion.introspective_comparator.block.custom.entity.IntrospectiveComparatorInvertedBlockEntity;
 import com.sertion.introspective_comparator.item.custom.BlockItemWithToolTip;
@@ -16,7 +15,6 @@ import org.jspecify.annotations.NonNull;
 
 public class IntrospectiveComparatorInvertedBlock extends IntrospectiveComparatorBlock {
     public final static String NAME = "introspective_comparator_inverted";
-    public final static MapCodec<IntrospectiveComparatorInvertedBlock> CODEC = simpleCodec(IntrospectiveComparatorInvertedBlock::new);
 
     public static DeferredBlock<@NonNull Block> registerTo(DeferredRegister. @NonNull Blocks registry, DeferredRegister. @NonNull Items itemRegistry) {
         DeferredBlock<@NonNull Block> block = registry.registerBlock(NAME, IntrospectiveComparatorInvertedBlock::new);
@@ -49,11 +47,6 @@ public class IntrospectiveComparatorInvertedBlock extends IntrospectiveComparato
 
     protected Block getWrenchBlockReplacement() {
         return IntrospectiveComparator.INTROSPECTIVE_COMPARATOR.get();
-    }
-
-    @Override
-    protected @NonNull MapCodec<IntrospectiveComparatorInvertedBlock> codec() {
-        return CODEC;
     }
 
     @Override
